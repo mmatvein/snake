@@ -8,7 +8,7 @@ namespace Game.Systems
     using ECS;
     using Game.Components;
 
-    public class SnakeMoveSystem
+    public class SnakeMoveSystem : ISystemTicks
     {
         private readonly IEntityDB entityDB;
 
@@ -17,7 +17,7 @@ namespace Game.Systems
             this.entityDB = entityDB;
         }
 
-        public void Update(float dt)
+        public void Update()
         {
             this.entityDB
                 .GetEntitiesWithComponents<Component<SnakePosition>, Component<Velocity>>() 
@@ -25,7 +25,6 @@ namespace Game.Systems
                     entity =>
                         {
                             this.UpdateMovement(
-                                dt,
                                 this.entityDB.GetComponent<Component<SnakePosition>>(entity),
                                 this.entityDB.GetComponent<Component<Velocity>>(entity)
                             );
@@ -33,7 +32,7 @@ namespace Game.Systems
                 );
         }
 
-        private void UpdateMovement(float dt, Component<SnakePosition> snakePosition, Component<Velocity> velocity)
+        private void UpdateMovement(Component<SnakePosition> snakePosition, Component<Velocity> velocity)
         {
             SnakePosition currentPosition = snakePosition.CurrentValue;
             Velocity currentVelocity = velocity.CurrentValue;
