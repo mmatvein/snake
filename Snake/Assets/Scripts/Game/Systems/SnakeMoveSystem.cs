@@ -34,6 +34,8 @@ namespace Game.Systems
 
         private void UpdateMovement(Component<SnakePosition> snakePosition, Component<Velocity> velocity)
         {
+            Debug.Log("Updating Movement");
+
             SnakePosition currentPosition = snakePosition.CurrentValue;
             Velocity currentVelocity = velocity.CurrentValue;
 

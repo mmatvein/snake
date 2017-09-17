@@ -4,7 +4,7 @@ using UnityEngine;
 using UniRx;
 using UnitySceneManager = UnityEngine.SceneManagement.SceneManager;
 
-namespace Game.System
+namespace Framework
 {
     public class Scene
     {

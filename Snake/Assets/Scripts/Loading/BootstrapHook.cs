@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UniRx;
 using UnityEngine;
 
-namespace Game.System
+namespace Framework
 {
     public class BootstrapHook : MonoBehaviour
     {

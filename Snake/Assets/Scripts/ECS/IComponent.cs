@@ -16,9 +16,10 @@ namespace ECS
         Type currentValue;
 
 
-        public Component()
+        public Component(Type initialValue)
         {
             this.subject = new Subject<Type>();
+            this.SetValue(initialValue);
         }
 
         public void SetValue(Type value)

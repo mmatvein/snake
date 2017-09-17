@@ -3,20 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
 
-namespace Game.System
+namespace Framework
 {
     public static class Bootstrap
     {
-        static SceneManager sceneManager;
+        public static readonly SceneManager SceneManager;
 
         static Bootstrap()
         {
-            sceneManager = new SceneManager();
+            Bootstrap.SceneManager = new SceneManager();
         }
 
         public static IObservable<AsyncOperation> StartGame()
         {
-            return sceneManager.LoadScene(new Scene("Loading"));
+            return Bootstrap.SceneManager.LoadScene(new Scene("Loading"));
         }
     }
 }

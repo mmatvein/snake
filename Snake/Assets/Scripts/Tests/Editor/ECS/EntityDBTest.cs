@@ -39,13 +39,13 @@ namespace ECS.Test
         {
             Entity entity = this.entityDB.CreateEntity("Test Entity");
 
-            this.entityDB.AddComponent(entity, new DummyComponent());
+            this.entityDB.AddComponent(entity, new DummyComponent(0));
 
             Assert.IsTrue(this.entityDB.HasComponent<DummyComponent>(entity), "Could not find component on entity");
 
             try
             {
-                this.entityDB.AddComponent(entity, new DummyComponent());
+                this.entityDB.AddComponent(entity, new DummyComponent(0));
                 Assert.IsTrue(false, "Was able to add duplicate component");
             }
             catch { }
@@ -68,9 +68,9 @@ namespace ECS.Test
             Entity firstEntity = this.entityDB.CreateEntity("First Entity");
             Entity secondEntity = this.entityDB.CreateEntity("Second Entity");
 
-            this.entityDB.AddComponent(firstEntity, new DummyComponent());
-            this.entityDB.AddComponent(firstEntity, new AnotherDummyComponent());
-            this.entityDB.AddComponent(secondEntity, new DummyComponent());
+            this.entityDB.AddComponent(firstEntity, new DummyComponent(0));
+            this.entityDB.AddComponent(firstEntity, new AnotherDummyComponent(0));
+            this.entityDB.AddComponent(secondEntity, new DummyComponent(0));
 
             {
                 IList<Entity> entitiesWithDummyComponent = this.entityDB
@@ -92,7 +92,13 @@ namespace ECS.Test
         }
 
 
-        private class DummyComponent : Component<int>{ }
-        private class AnotherDummyComponent : Component<float> { }
+        private class DummyComponent : Component<int>
+        {
+            public DummyComponent(int initialValue) : base(initialValue) { }
+        }
+        private class AnotherDummyComponent : Component<float>
+        {
+            public AnotherDummyComponent(float initialValue) : base(initialValue) { }
+        }
     }
 }
