@@ -9,13 +9,14 @@ namespace Game
     using Systems;
     public class MainGame : Framework.IMainGame
     {
-        public const float TickTime = 1;
+        public const float TickTime = 0.5f;
 
         List<ISystemDeltaTime> deltaTimeUpdateSystems;
         List<ISystemTicks> tickUpdateSystems;
         IEntityDB entityDB;
 
         System.IDisposable tickUpdater;
+        System.IDisposable deltaTimeUpdater;
 
         public MainGame()
         {
@@ -45,6 +46,13 @@ namespace Game
                         )
                     );
 
+                    this.entityDB.AddComponent<Component<Components.Visuals.SnakeVisuals>>(
+                        snake,
+                        new Component<Components.Visuals.SnakeVisuals>(
+                            new Components.Visuals.SnakeVisuals()
+                        )
+                    );
+
                     subscriber.OnCompleted();
 
                     return Disposable.Empty;
@@ -56,11 +64,22 @@ namespace Game
             if (this.tickUpdater != null)
                 this.tickUpdater.Dispose();
 
-            this.tickUpdater = Observable.Interval(System.TimeSpan.FromSeconds(TickTime)).Subscribe
-                (_ =>
+            this.tickUpdater = Observable.Interval(System.TimeSpan.FromSeconds(TickTime)).Subscribe(
+                _ =>
                     {
                         foreach (var tickUpdateSystem in this.tickUpdateSystems)
                             tickUpdateSystem.Update();
+                    }
+                );
+
+            if (this.deltaTimeUpdater != null)
+                this.deltaTimeUpdater.Dispose();
+
+            this.deltaTimeUpdater = Observable.EveryUpdate().Subscribe(
+                tick =>
+                    {
+                        foreach (var deltaTimeUpdateSystem in this.deltaTimeUpdateSystems)
+                            deltaTimeUpdateSystem.Update(tick / 1000f);
                     }
                 );
         }
@@ -72,6 +91,9 @@ namespace Game
 
         void SetupDeltaTimeUpdateSystems()
         {
+            this.deltaTimeUpdateSystems = new List<ISystemDeltaTime>();
+
+            this.deltaTimeUpdateSystems.Add(new SnakeRenderSystem(this.entityDB));
 
         }
 
