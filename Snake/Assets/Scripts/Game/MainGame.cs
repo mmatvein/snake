@@ -63,6 +63,13 @@ namespace Game
                         )
                     );
 
+                    this.entityDB.AddComponent(
+                        snake,
+                        new Component<SnakeDirection>(
+                            new SnakeDirection(Direction.Left, Direction.Left)
+                        )
+                    );
+
                     subscriber.OnCompleted();
 
                     return Disposable.Empty;
@@ -104,6 +111,7 @@ namespace Game
             this.deltaTimeUpdateSystems = new List<ISystemDeltaTime>
             {
                 new InputSystem(this.entityDB),
+                new SnakeDirectionSystem(this.entityDB),
                 new SnakeRenderSystem(this.entityDB)
             };
 
@@ -113,6 +121,7 @@ namespace Game
         {
             this.tickUpdateSystems = new List<ISystemTicks>
             {
+                new SnakeVelocitySystem(this.entityDB),
                 new SnakeMoveSystem(this.entityDB)
             };
         }
