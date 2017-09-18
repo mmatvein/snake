@@ -7,6 +7,9 @@ namespace Game
 {
     using ECS;
     using Systems;
+    using Components;
+    using Components.Visuals;
+
     public class MainGame : Framework.IMainGame
     {
         public const float TickTime = 0.5f;
@@ -31,25 +34,32 @@ namespace Game
                     this.SetupTickUpdateSystems();
 
                     Entity snake = this.entityDB.CreateEntity("Snake");
-                    this.entityDB.AddComponent<Component<Components.SnakePosition>>(
+                    this.entityDB.AddComponent(
                         snake, 
-                        new Component<Components.SnakePosition>(
-                            new Components.SnakePosition(
+                        new Component<SnakePosition>(
+                            new SnakePosition(
                                 new List<Vector2>() { new Vector2(0, 0), new Vector2(1, 0), new Vector2(2, 0) }
                             )
                         )
                     );
-                    this.entityDB.AddComponent<Component<Components.Velocity>>(
+                    this.entityDB.AddComponent(
                         snake,
-                        new Component<Components.Velocity>(
-                            new Components.Velocity(new Vector2(-1, 0))
+                        new Component<Velocity>(
+                            new Velocity(new Vector2(-1, 0))
                         )
                     );
 
-                    this.entityDB.AddComponent<Component<Components.Visuals.SnakeVisuals>>(
+                    this.entityDB.AddComponent(
                         snake,
-                        new Component<Components.Visuals.SnakeVisuals>(
-                            new Components.Visuals.SnakeVisuals()
+                        new Component<SnakeVisuals>(
+                            new SnakeVisuals()
+                        )
+                    );
+
+                    this.entityDB.AddComponent(
+                        snake,
+                        new Component<Components.Input>(
+                            new Components.Input()
                         )
                     );
 
@@ -91,17 +101,20 @@ namespace Game
 
         void SetupDeltaTimeUpdateSystems()
         {
-            this.deltaTimeUpdateSystems = new List<ISystemDeltaTime>();
-
-            this.deltaTimeUpdateSystems.Add(new SnakeRenderSystem(this.entityDB));
+            this.deltaTimeUpdateSystems = new List<ISystemDeltaTime>
+            {
+                new InputSystem(this.entityDB),
+                new SnakeRenderSystem(this.entityDB)
+            };
 
         }
 
         void SetupTickUpdateSystems()
         {
-            this.tickUpdateSystems = new List<ISystemTicks>();
-
-            this.tickUpdateSystems.Add(new SnakeMoveSystem(this.entityDB));
+            this.tickUpdateSystems = new List<ISystemTicks>
+            {
+                new SnakeMoveSystem(this.entityDB)
+            };
         }
     }
 }
