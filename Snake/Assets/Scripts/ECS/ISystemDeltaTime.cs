@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ECS
 {
-    public interface ISystemDeltaTime
+    public interface ISystemContinuous
     {
         void Update(float dt);
     }

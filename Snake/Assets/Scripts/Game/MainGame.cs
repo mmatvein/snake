@@ -14,7 +14,7 @@ namespace Game
     {
         public const float TickTime = 0.5f;
 
-        List<ISystemDeltaTime> deltaTimeUpdateSystems;
+        List<ISystemContinuous> deltaTimeUpdateSystems;
         List<ISystemTicks> tickUpdateSystems;
         IEntityDB entityDB;
 
@@ -108,7 +108,7 @@ namespace Game
 
         void SetupDeltaTimeUpdateSystems()
         {
-            this.deltaTimeUpdateSystems = new List<ISystemDeltaTime>
+            this.deltaTimeUpdateSystems = new List<ISystemContinuous>
             {
                 new InputSystem(this.entityDB),
                 new SnakeDirectionSystem(this.entityDB),

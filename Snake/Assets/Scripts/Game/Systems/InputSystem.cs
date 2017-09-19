@@ -7,7 +7,7 @@ namespace Game.Systems
 {
     using ECS;
 
-    public class InputSystem : ISystemDeltaTime
+    public class InputSystem : ISystemContinuous
     {
         private readonly IEntityDB entityDB;
 

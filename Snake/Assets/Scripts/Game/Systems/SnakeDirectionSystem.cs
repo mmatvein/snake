@@ -6,7 +6,7 @@ using UniRx;
 namespace Game.Systems
 {
     using ECS;
-    public class SnakeDirectionSystem : ISystemDeltaTime
+    public class SnakeDirectionSystem : ISystemContinuous
     {
         private readonly IEntityDB entityDB;
 

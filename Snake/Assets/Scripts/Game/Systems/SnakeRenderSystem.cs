@@ -9,7 +9,7 @@ namespace Game.Systems
     using Game.Components;
     using Game.Components.Visuals;
 
-    public class SnakeRenderSystem : ISystemDeltaTime
+    public class SnakeRenderSystem : ISystemContinuous
     {
         private readonly IEntityDB entityDB;
 
