@@ -20,17 +20,8 @@ namespace Game.Systems
 
         public void Update(float dt)
         {
-            this.entityDB
-               .GetEntitiesWithComponents<SnakePosition, SnakeVisuals>()
-               .Subscribe(
-                   entity =>
-                   {
-                       this.UpdateRenderer(
-                            this.entityDB.GetComponent<SnakePosition>(entity),
-                            this.entityDB.GetComponent<SnakeVisuals>(entity)
-                        );
-                   }
-               );
+            this.entityDB.GetEntitiesWithComponents<SnakePosition, SnakeVisuals>()
+               .Subscribe(entity => this.UpdateRenderer(entity.Item2, entity.Item3));
         }
 
         private void UpdateRenderer(Component<SnakePosition> snakePosition, Component<SnakeVisuals> snakeVisuals)
@@ -45,8 +36,7 @@ namespace Game.Systems
 
             foreach (var position in positions)
             {
-                GameObject block = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                block.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+                GameObject block = GameObject.CreatePrimitive(PrimitiveType.Sphere);
                 block.transform.position = position;
                 newVisualBlocks.Add(block);
             }

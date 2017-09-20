@@ -73,10 +73,11 @@ namespace ECS.Test
             this.entityDB.AddComponent(secondEntity, new DummyComponent(0));
 
             {
-                IList<Entity> entitiesWithDummyComponent = this.entityDB
-                    .GetEntitiesWithComponent<DummyComponent>()
-                    .ToList()
-                    .Wait();
+                IList<Entity> entitiesWithDummyComponent = 
+                    this.entityDB.GetEntitiesWithComponent<DummyComponent>()
+                        .Select(tuple => tuple.Item1)  
+                        .ToList()
+                        .Wait();
                 Assert.IsTrue(entitiesWithDummyComponent.Contains(firstEntity), "First entity wasn't in the list");
                 Assert.IsTrue(entitiesWithDummyComponent.Contains(secondEntity), "Second entity wasn't in the list");
             }
@@ -84,6 +85,7 @@ namespace ECS.Test
             {
                 IList<Entity> entitiesWithBothComponents = this.entityDB
                     .GetEntitiesWithComponents<DummyComponent, AnotherDummyComponent>()
+                    .Select(tuple => tuple.Item1)
                     .ToList()
                     .Wait();
                 Assert.IsTrue(entitiesWithBothComponents.Contains(firstEntity), "First entity wasn't in the list");

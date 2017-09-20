@@ -14,9 +14,11 @@ namespace ECS
         void AddComponent<ComponentContent>(Entity entity, ComponentContent componentContent);
         void RemoveComponent<ComponentContent>(Entity entity);
         bool HasComponent<ComponentContent>(Entity entity);
-
-        Component<ComponentContent> GetComponent<ComponentContent>(Entity entity);
+        
         IObservable<Component<ComponentContent>> GetObservableComponentStream<ComponentContent>();
+        IObservable<Tuple<Entity, Component<C>>> GetEntitiesWithComponent<C>();
+        IObservable<Tuple<Entity, Component<C1>, Component<C2>>> GetEntitiesWithComponents<C1, C2>();
+        IObservable<Tuple<Entity, Component<C1>, Component<C2>, Component<C3>>> GetEntitiesWithComponents<C1, C2, C3>();
     }
 
     public class EntityDBImpl : IEntityDB
@@ -84,7 +86,7 @@ namespace ECS
             return this.components.ContainsKey(componentType) && this.components[componentType].ContainsKey(entity);
         }
 
-        public Component<ComponentContent> GetComponent<ComponentContent>(Entity entity)
+        Component<ComponentContent> GetComponent<ComponentContent>(Entity entity)
         {
             System.Type componentType = typeof(Component<ComponentContent>);
             return (Component<ComponentContent>)this.components[componentType][entity];
@@ -114,6 +116,40 @@ namespace ECS
                 this.componentUpdateStreams[componentType].OnNext(component);
             }
         }
+
+        public IObservable<Tuple<Entity, Component<C>>> GetEntitiesWithComponent<C>()
+        {
+            return this.GetEntities()
+                .Where(entity => this.HasComponent<C>(entity))
+                .Select(entity => Tuple.Create(
+                    entity,
+                    this.GetComponent<C>(entity)));
+        }
+
+        public IObservable<Tuple<Entity, Component<C1>, Component<C2>>> GetEntitiesWithComponents<C1, C2>()
+        {
+            return this.GetEntities()
+                .Where(entity => this.HasComponent<C1>(entity) &&
+                    this.HasComponent<C2>(entity))
+                .Select(entity => Tuple.Create(
+                    entity,
+                    this.GetComponent<C1>(entity),
+                    this.GetComponent<C2>(entity)));
+        }
+
+        public IObservable<Tuple<Entity, Component<C1>, Component<C2>, Component<C3>>> GetEntitiesWithComponents<C1, C2, C3>()
+        {
+            return this.GetEntities()
+                .Where(entity =>
+                    this.HasComponent<C1>(entity) &&
+                    this.HasComponent<C2>(entity) &&
+                    this.HasComponent<C3>(entity))
+                .Select(entity => Tuple.Create(
+                    entity,
+                    this.GetComponent<C1>(entity),
+                    this.GetComponent<C2>(entity),
+                    this.GetComponent<C3>(entity)));
+        }
     }
 
 
@@ -122,29 +158,5 @@ namespace ECS
         public EntityDBException(string message) :
             base(message)
         {}
-    }
-
-    public static class EntityDBExtentions
-    {
-        public static IObservable<Entity> GetEntitiesWithComponent<C>(this IEntityDB entityDB) 
-        {
-            return entityDB.GetEntities()
-                .Where(entity => entityDB.HasComponent<C>(entity));
-        }
-
-        public static IObservable<Entity> GetEntitiesWithComponents<C1, C2>(this IEntityDB entityDB)
-        {
-            return entityDB.GetEntities()
-                .Where(entity => entityDB.HasComponent<C1>(entity) && entityDB.HasComponent<C2>(entity));
-        }
-
-        public static IObservable<Entity> GetEntitiesWithComponents<C1, C2, C3>(this IEntityDB entityDB)
-        {
-            return entityDB.GetEntities()
-                .Where(entity => 
-                    entityDB.HasComponent<C1>(entity) && 
-                    entityDB.HasComponent<C2>(entity) &&
-                    entityDB.HasComponent<C3>(entity));
-        }
     }
 }

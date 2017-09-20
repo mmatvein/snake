@@ -47,7 +47,10 @@ namespace Game
             this.entityDB.AddComponent(
                 snake,
                 new SnakePosition(
-                        new List<Vector2>() { new Vector2(0, 0), new Vector2(1, 0), new Vector2(2, 0) }
+                        new List<Vector2>() {
+                            new Vector2(0, 0), new Vector2(1, 0), new Vector2(2, 0),
+                            new Vector2(3, 0), new Vector2(4, 0), new Vector2(5, 0)
+                        }
                 )
             );
             this.entityDB.AddComponent(

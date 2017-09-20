@@ -31,17 +31,8 @@ namespace Game.Systems
 
         void HandleTick(Component<Ticker> ticker)
         {
-            this.entityDB
-                .GetEntitiesWithComponents<SnakePosition, Velocity>()
-                .Subscribe(
-                    entity =>
-                    {
-                        this.UpdateMovement(
-                            this.entityDB.GetComponent<SnakePosition>(entity),
-                            this.entityDB.GetComponent<Velocity>(entity)
-                        );
-                    }
-                );
+            this.entityDB.GetEntitiesWithComponents<SnakePosition, Velocity>()
+                .Subscribe(entity => this.UpdateMovement(entity.Item2, entity.Item3));
         }
 
         private void UpdateMovement(Component<SnakePosition> snakePosition, Component<Velocity> velocity)

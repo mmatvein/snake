@@ -19,12 +19,7 @@ namespace Game.Systems
         public void Update(float dt)
         {
             this.entityDB.GetEntitiesWithComponent<Timer>()
-                .Subscribe(
-                    entity =>
-                    {
-                        this.UpdateTimer(dt, this.entityDB.GetComponent<Timer>(entity));
-                    }
-                );
+                .Subscribe(entity => this.UpdateTimer(dt, entity.Item2));
         }
 
         void UpdateTimer(float dt, Component<Timer> timer)

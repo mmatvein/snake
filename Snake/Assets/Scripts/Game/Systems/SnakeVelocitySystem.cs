@@ -28,14 +28,7 @@ namespace Game.Systems
         void HandleTick(Component<Components.Ticker> ticker)
         {
             this.entityDB.GetEntitiesWithComponents<Components.SnakeDirection, Components.Velocity>()
-                .Subscribe(
-                    entity =>
-                    {
-                        this.SetVelocity(
-                            this.entityDB.GetComponent<Components.SnakeDirection>(entity),
-                            this.entityDB.GetComponent<Components.Velocity>(entity));
-                    }
-                );
+                .Subscribe(entity => this.SetVelocity(entity.Item2, entity.Item3));
         }
 
         void SetVelocity(Component<Components.SnakeDirection> snakeDirection, Component<Components.Velocity> snakeVelocity)

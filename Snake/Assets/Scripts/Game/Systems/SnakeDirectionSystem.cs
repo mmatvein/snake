@@ -18,14 +18,7 @@ namespace Game.Systems
         public void Update(float dt)
         {
             this.entityDB.GetEntitiesWithComponents<Components.Input, Components.SnakeDirection>()
-                .Subscribe(
-                    entity =>
-                        {
-                            this.SetDirection(
-                                this.entityDB.GetComponent<Components.Input>(entity),
-                                this.entityDB.GetComponent<Components.SnakeDirection>(entity));
-                        }
-                );
+                .Subscribe(entity => this.SetDirection(entity.Item2, entity.Item3));
         }
 
         void SetDirection(Component<Components.Input> input, Component<Components.SnakeDirection> snakeDirection)

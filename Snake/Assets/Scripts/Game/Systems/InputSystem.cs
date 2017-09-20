@@ -19,14 +19,10 @@ namespace Game.Systems
         public void Update(float dt)
         {
             this.entityDB.GetEntitiesWithComponent<Components.Input>()
-                .Subscribe(
-                    entity =>
-                    {
-                        this.SetInput(this.entityDB.GetComponent<Components.Input>(entity));
-                    });
+                .Subscribe(entity => this.UpdateInput(entity.Item2));
         }
 
-        void SetInput(Component<Components.Input> inputComponent)
+        void UpdateInput(Component<Components.Input> inputComponent)
         {
             bool up = Input.GetKey(KeyCode.UpArrow);
             bool down = Input.GetKey(KeyCode.DownArrow);
