@@ -39,24 +39,24 @@ namespace ECS.Test
         {
             Entity entity = this.entityDB.CreateEntity("Test Entity");
 
-            this.entityDB.AddComponent(entity, new DummyComponent(0));
+            this.entityDB.AddComponent(entity, 0);
 
-            Assert.IsTrue(this.entityDB.HasComponent<DummyComponent>(entity), "Could not find component on entity");
+            Assert.IsTrue(this.entityDB.HasComponent<int>(entity), "Could not find component on entity");
 
             try
             {
-                this.entityDB.AddComponent(entity, new DummyComponent(0));
+                this.entityDB.AddComponent(entity, 0);
                 Assert.IsTrue(false, "Was able to add duplicate component");
             }
             catch { }
 
-            this.entityDB.RemoveComponent<DummyComponent>(entity);
+            this.entityDB.RemoveComponent<int>(entity);
 
-            Assert.IsFalse(this.entityDB.HasComponent<DummyComponent>(entity), "Could still find component on entity");
+            Assert.IsFalse(this.entityDB.HasComponent<int>(entity), "Could still find component on entity");
 
             try
             {
-                this.entityDB.RemoveComponent<DummyComponent>(entity);
+                this.entityDB.RemoveComponent<int>(entity);
                 Assert.IsTrue(false, "Was able to remove an unexisting component");
             }
             catch { }
@@ -67,40 +67,73 @@ namespace ECS.Test
         {
             Entity firstEntity = this.entityDB.CreateEntity("First Entity");
             Entity secondEntity = this.entityDB.CreateEntity("Second Entity");
+            Entity thirdEntity = this.entityDB.CreateEntity("Third Entity");
 
-            this.entityDB.AddComponent(firstEntity, new DummyComponent(0));
-            this.entityDB.AddComponent(firstEntity, new AnotherDummyComponent(0));
-            this.entityDB.AddComponent(secondEntity, new DummyComponent(0));
+            this.entityDB.AddComponent(firstEntity, 0f);
+            this.entityDB.AddComponent(firstEntity, 0);
+            this.entityDB.AddComponent(firstEntity, 0L);
+            this.entityDB.AddComponent(secondEntity, 0f);
+            this.entityDB.AddComponent(secondEntity, 0L);
+            this.entityDB.AddComponent(thirdEntity, 0L);
 
             {
-                IList<Entity> entitiesWithDummyComponent = 
-                    this.entityDB.GetEntitiesWithComponent<DummyComponent>()
+                IList<Entity> entities = 
+                    this.entityDB.GetEntitiesWithComponent<float>()
                         .Select(tuple => tuple.Item1)  
                         .ToList()
                         .Wait();
-                Assert.IsTrue(entitiesWithDummyComponent.Contains(firstEntity), "First entity wasn't in the list");
-                Assert.IsTrue(entitiesWithDummyComponent.Contains(secondEntity), "Second entity wasn't in the list");
+                Assert.IsTrue(entities.Contains(firstEntity), "First entity wasn't in the list");
+                Assert.IsTrue(entities.Contains(secondEntity), "Second entity wasn't in the list");
+                Assert.IsFalse(entities.Contains(thirdEntity), "Third entity was in the list");
             }
 
             {
-                IList<Entity> entitiesWithBothComponents = this.entityDB
-                    .GetEntitiesWithComponents<DummyComponent, AnotherDummyComponent>()
+                IList<Entity> entities = this.entityDB
+                    .GetEntitiesWithComponents<float, int>()
                     .Select(tuple => tuple.Item1)
                     .ToList()
                     .Wait();
-                Assert.IsTrue(entitiesWithBothComponents.Contains(firstEntity), "First entity wasn't in the list");
-                Assert.IsFalse(entitiesWithBothComponents.Contains(secondEntity), "Second entity was in the list");
+                Assert.IsTrue(entities.Contains(firstEntity), "First entity wasn't in the list");
+                Assert.IsFalse(entities.Contains(secondEntity), "Second entity was in the list");
+                Assert.IsFalse(entities.Contains(thirdEntity), "Third entity was in the list");
+            }
+
+            {
+                IList<Entity> entities = this.entityDB
+                    .GetEntitiesWithComponents<float, int, long>()
+                    .Select(tuple => tuple.Item1)
+                    .ToList()
+                    .Wait();
+                Assert.IsTrue(entities.Contains(firstEntity), "First entity wasn't in the list");
+                Assert.IsFalse(entities.Contains(secondEntity), "Second entity was in the list");
+                Assert.IsFalse(entities.Contains(thirdEntity), "Third entity was in the list");
             }
         }
 
+        [Test]
+        public void GetObservableComponentStream()
+        {
+            Entity firstEntity = this.entityDB.CreateEntity("First entity");
 
-        private class DummyComponent : Component<int>
-        {
-            public DummyComponent(int initialValue) : base(initialValue) { }
-        }
-        private class AnotherDummyComponent : Component<float>
-        {
-            public AnotherDummyComponent(float initialValue) : base(initialValue) { }
+            this.entityDB.AddComponent(firstEntity, 0);
+
+            System.Action update = () =>
+                {
+                    this.entityDB.GetEntitiesWithComponent<int>()
+                        .Subscribe(entity => entity.Item2.SetValue(entity.Item2.Value + 1));
+                };
+
+            int callCount = 0;
+            System.IDisposable subscription = 
+                this.entityDB.GetObservableComponentStream<int>()
+                    .Subscribe(component => callCount++);
+
+            update();
+            update();
+
+            subscription.Dispose();
+
+            Assert.AreEqual(2, callCount, "Component update event not triggered correct amount of times");
         }
     }
 }
