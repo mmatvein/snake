@@ -5,27 +5,31 @@ using UniRx;
 
 namespace ECS
 {
-    public interface IComponent { }
+    
+
+    public interface IComponent
+    {
+    }
 
     public class Component<Type> : IComponent
     {
-        public Type CurrentValue { get { return this.currentValue; } }
-        public IObservable<Type> Observable { get { return this.subject.AsObservable(); } }
-
-        Subject<Type> subject;   
+        public Type Value { get { return this.currentValue; } }
         Type currentValue;
 
+        public delegate void OnComponentValueUpdatedDelegate(Component<Type> newValue);
+        public event OnComponentValueUpdatedDelegate OnValueUpdated;
 
         public Component(Type initialValue)
         {
-            this.subject = new Subject<Type>();
             this.SetValue(initialValue);
         }
 
         public void SetValue(Type value)
         {
             this.currentValue = value;
-            this.subject.OnNext(value);
+
+            if (this.OnValueUpdated != null)
+                this.OnValueUpdated(this);
         }
     }
 }

@@ -1,37 +1,47 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UniRx;
 
 namespace Game.Systems
 {
     using ECS;
-    public class SnakeVelocitySystem : ISystemTicks
+    public class SnakeVelocitySystem : ISystemReactive
     { 
         private readonly IEntityDB entityDB;
+        System.IDisposable tickerSubscription;
 
         public SnakeVelocitySystem(IEntityDB entityDB)
         {
             this.entityDB = entityDB;
         }
 
-        public void Update()
+        public void Register()
         {
-            this.entityDB.GetEntitiesWithComponents<Component<Components.SnakeDirection>, Component<Components.Velocity>>()
+            this.tickerSubscription = this.entityDB.GetObservableComponentStream<Components.Ticker>()
+                .Subscribe(this.HandleTick);
+        }
+
+        public void Unregister()
+        {
+            this.tickerSubscription.Dispose();
+        }
+
+        void HandleTick(Component<Components.Ticker> ticker)
+        {
+            this.entityDB.GetEntitiesWithComponents<Components.SnakeDirection, Components.Velocity>()
                 .Subscribe(
                     entity =>
                     {
                         this.SetVelocity(
-                            this.entityDB.GetComponent<Component<Components.SnakeDirection>>(entity),
-                            this.entityDB.GetComponent<Component<Components.Velocity>>(entity));
+                            this.entityDB.GetComponent<Components.SnakeDirection>(entity),
+                            this.entityDB.GetComponent<Components.Velocity>(entity));
                     }
                 );
         }
 
         void SetVelocity(Component<Components.SnakeDirection> snakeDirection, Component<Components.Velocity> snakeVelocity)
         {
-            Vector2 newVelocity = snakeVelocity.CurrentValue.velocity;
-            Components.Direction wantedDirection = snakeDirection.CurrentValue.currentWantedDirection;
+            Vector2 newVelocity = snakeVelocity.Value.velocity;
+            Components.Direction wantedDirection = snakeDirection.Value.currentWantedDirection;
             switch (wantedDirection)
             {
                 case Components.Direction.Up:

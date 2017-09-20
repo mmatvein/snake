@@ -18,11 +18,11 @@ namespace Game.Systems
 
         public void Update(float dt)
         {
-            this.entityDB.GetEntitiesWithComponent<Component<Components.Input>>()
+            this.entityDB.GetEntitiesWithComponent<Components.Input>()
                 .Subscribe(
                     entity =>
                     {
-                        this.SetInput(this.entityDB.GetComponent<Component<Components.Input>>(entity));
+                        this.SetInput(this.entityDB.GetComponent<Components.Input>(entity));
                     });
         }
 

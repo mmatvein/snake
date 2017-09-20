@@ -8,36 +8,46 @@ namespace Game.Systems
     using ECS;
     using Game.Components;
 
-    public class SnakeMoveSystem : ISystemTicks
+    public class SnakeMoveSystem : ISystemReactive
     {
         private readonly IEntityDB entityDB;
+        System.IDisposable tickerSubscription;
 
         public SnakeMoveSystem(IEntityDB entityDB)
         {
             this.entityDB = entityDB;
         }
 
-        public void Update()
+        public void Register()
+        {
+            this.tickerSubscription = this.entityDB.GetObservableComponentStream<Ticker>()
+                .Subscribe(this.HandleTick);
+        }
+
+        public void Unregister()
+        {
+            this.tickerSubscription.Dispose();
+        }
+
+        void HandleTick(Component<Ticker> ticker)
         {
             this.entityDB
-                .GetEntitiesWithComponents<Component<SnakePosition>, Component<Velocity>>() 
+                .GetEntitiesWithComponents<SnakePosition, Velocity>()
                 .Subscribe(
                     entity =>
-                        {
-                            this.UpdateMovement(
-                                this.entityDB.GetComponent<Component<SnakePosition>>(entity),
-                                this.entityDB.GetComponent<Component<Velocity>>(entity)
-                            );
-                        }
+                    {
+                        this.UpdateMovement(
+                            this.entityDB.GetComponent<SnakePosition>(entity),
+                            this.entityDB.GetComponent<Velocity>(entity)
+                        );
+                    }
                 );
         }
 
         private void UpdateMovement(Component<SnakePosition> snakePosition, Component<Velocity> velocity)
         {
-            Debug.Log("Updating Movement");
-
-            SnakePosition currentPosition = snakePosition.CurrentValue;
-            Velocity currentVelocity = velocity.CurrentValue;
+            SnakePosition currentPosition = snakePosition.Value;
+            Velocity currentVelocity = velocity.Value;
 
             List<Vector2> newPositions = new List<Vector2>(currentPosition.positions);
             Vector2 newHeadPosition = newPositions[0] + currentVelocity.velocity;

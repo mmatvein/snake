@@ -17,22 +17,22 @@ namespace Game.Systems
 
         public void Update(float dt)
         {
-            this.entityDB.GetEntitiesWithComponents<Component<Components.Input>, Component<Components.SnakeDirection>>()
+            this.entityDB.GetEntitiesWithComponents<Components.Input, Components.SnakeDirection>()
                 .Subscribe(
                     entity =>
                         {
                             this.SetDirection(
-                                this.entityDB.GetComponent<Component<Components.Input>>(entity),
-                                this.entityDB.GetComponent<Component<Components.SnakeDirection>>(entity));
+                                this.entityDB.GetComponent<Components.Input>(entity),
+                                this.entityDB.GetComponent<Components.SnakeDirection>(entity));
                         }
                 );
         }
 
         void SetDirection(Component<Components.Input> input, Component<Components.SnakeDirection> snakeDirection)
         {
-            Components.Direction currentDirection = snakeDirection.CurrentValue.currentDirection;
-            Components.Direction wantedDirection = snakeDirection.CurrentValue.currentWantedDirection;
-            Components.Input currentInput = input.CurrentValue;
+            Components.Direction currentDirection = snakeDirection.Value.currentDirection;
+            Components.Direction wantedDirection = snakeDirection.Value.currentWantedDirection;
+            Components.Input currentInput = input.Value;
             
             switch (currentDirection)
             {

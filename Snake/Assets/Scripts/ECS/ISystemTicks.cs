@@ -1,11 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace ECS
+﻿namespace ECS
 {
-    public interface ISystemTicks
+    public interface ISystemReactive
     {
-        void Update();
+        void Register();
+        void Unregister();
     }
 }

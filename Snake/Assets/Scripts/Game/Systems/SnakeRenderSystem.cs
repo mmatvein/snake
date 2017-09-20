@@ -21,13 +21,13 @@ namespace Game.Systems
         public void Update(float dt)
         {
             this.entityDB
-               .GetEntitiesWithComponents<Component<SnakePosition>, Component<SnakeVisuals>>()
+               .GetEntitiesWithComponents<SnakePosition, SnakeVisuals>()
                .Subscribe(
                    entity =>
                    {
                        this.UpdateRenderer(
-                            this.entityDB.GetComponent<Component<SnakePosition>>(entity),
-                            this.entityDB.GetComponent<Component<SnakeVisuals>>(entity)
+                            this.entityDB.GetComponent<SnakePosition>(entity),
+                            this.entityDB.GetComponent<SnakeVisuals>(entity)
                         );
                    }
                );
@@ -35,12 +35,12 @@ namespace Game.Systems
 
         private void UpdateRenderer(Component<SnakePosition> snakePosition, Component<SnakeVisuals> snakeVisuals)
         {
-            List<GameObject> visualBlocks = snakeVisuals.CurrentValue.snakeBlocks;
+            List<GameObject> visualBlocks = snakeVisuals.Value.snakeBlocks;
             if (visualBlocks != null)
                 foreach (var gameObject in visualBlocks)
                     GameObject.Destroy(gameObject);
 
-            List<Vector2> positions = snakePosition.CurrentValue.positions;
+            List<Vector2> positions = snakePosition.Value.positions;
             List<GameObject> newVisualBlocks = new List<GameObject>(positions.Count);
 
             foreach (var position in positions)
