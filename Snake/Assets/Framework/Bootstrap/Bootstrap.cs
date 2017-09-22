@@ -11,7 +11,8 @@ namespace Framework
 
         static Bootstrap()
         {
-            Bootstrap.SceneManager = new SceneManager();
+            AssetBundleManager assetBundleManager = new AssetBundleManager();
+            Bootstrap.SceneManager = new SceneManager(assetBundleManager);
         }
 
         public static IObservable<AsyncOperation> StartGame()

@@ -9,19 +9,23 @@ namespace Framework
     public class Scene
     {
         public readonly string sceneName;
+        public readonly string assetBundleName;
 
-        public Scene(string sceneName)
+        public Scene(string sceneName, string assetBundleName = "scenes")
         {
             this.sceneName = sceneName;
+            this.assetBundleName = assetBundleName;
         }
     }
 
     public class SceneManager
     {
+        private readonly AssetBundleManager assetBundleManager;
         HashSet<Scene> loadedScenes;
 
-        public SceneManager()
+        public SceneManager(AssetBundleManager assetBundleManager)
         {
+            this.assetBundleManager = assetBundleManager;
             this.loadedScenes = new HashSet<Scene>();
         }
 
@@ -55,8 +59,7 @@ namespace Framework
 
         IObservable<AsyncOperation> LoadSceneInternal(Scene scene, UnityEngine.SceneManagement.LoadSceneMode mode)
         {
-            AsyncOperation loadOperation = UnitySceneManager.LoadSceneAsync(scene.sceneName, mode);
-            return loadOperation.AsAsyncOperationObservable();
+            return this.assetBundleManager.LoadScene(scene, mode == UnityEngine.SceneManagement.LoadSceneMode.Additive ? true : false);
         }
     }
 }
