@@ -14,20 +14,29 @@ namespace Game.ViewSystems
     {
         public ViewManagementSystem(Contexts contexts, AssetBundleManager assetBundleManager) : base("View Management")
         {
-            this.Add(new ViewPoolingSystem<SpriteRenderer>(contexts, assetBundleManager, new AssetDefinition<SpriteRenderer>("prefabs", "Pooled Sprite")));
+            this.Add(new ViewPoolingSystem<SpriteRenderer>(
+                "Sprite Pool", contexts, 
+                assetBundleManager, 
+                new AssetDefinition<SpriteRenderer>("prefabs", "Pooled Sprite")));
         }
     }
 
     internal class ViewPoolingSystem<PooledObjectType> : ReactiveSystem<ViewEntity>, IInitializeSystem where PooledObjectType : Component
     {
+        readonly string name;
         readonly ViewContext viewContext;
         readonly AssetBundleManager assetBundleManager;
         readonly AssetDefinition<PooledObjectType> assetDefinition;
 
         ViewEntity viewPoolEntity;
 
-        public ViewPoolingSystem(Contexts contexts, AssetBundleManager assetBundleManager, AssetDefinition<PooledObjectType> assetDefinition) : base(contexts.view)
+        public ViewPoolingSystem(
+            string name, Contexts contexts, 
+            AssetBundleManager assetBundleManager, 
+            AssetDefinition<PooledObjectType> assetDefinition) 
+                : base(contexts.view)
         {
+            this.name = name;
             this.viewContext = contexts.view;
             this.assetBundleManager = assetBundleManager;
             this.assetDefinition = assetDefinition;
@@ -35,8 +44,14 @@ namespace Game.ViewSystems
 
         public void Initialize()
         {
+            GameObject poolParentObject = new GameObject(name);
+
             this.viewPoolEntity = this.viewContext.CreateEntity();
-            this.viewPoolEntity.AddViewPool(this.assetBundleManager.LoadAsset(this.assetDefinition).Wait(), new List<GameObject>(), new List<GameObject>());
+            this.viewPoolEntity.AddViewPool(
+                this.assetBundleManager.LoadAsset(this.assetDefinition).Wait(), 
+                new List<GameObject>(), 
+                new List<GameObject>(),
+                poolParentObject.transform);
         }
 
         protected override void Execute(List<ViewEntity> entities)
@@ -78,6 +93,7 @@ namespace Game.ViewSystems
             if (this.viewPoolEntity.viewPool.freeViews.Count == 0)
             {
                 viewToUse = GameObject.Instantiate<PooledObjectType>(this.viewPoolEntity.viewPool.prefab as PooledObjectType).gameObject;
+                viewToUse.transform.SetParent(this.viewPoolEntity.viewPool.poolTransform, false);
             }
             else
             {
@@ -96,6 +112,7 @@ namespace Game.ViewSystems
             this.viewPoolEntity.viewPool.usedViews.Remove(viewObject);
             this.viewPoolEntity.viewPool.freeViews.Add(viewObject);
             viewObject.SetActive(false);
+            viewObject.transform.SetParent(this.viewPoolEntity.viewPool.poolTransform, false);
         }
     }
 }

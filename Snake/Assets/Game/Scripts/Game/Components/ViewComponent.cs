@@ -21,5 +21,6 @@ namespace Game.Components
         public Object prefab;
         public List<GameObject> freeViews;
         public List<GameObject> usedViews;
+        public Transform poolTransform;
     }
 }

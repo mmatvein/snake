@@ -25,7 +25,7 @@ namespace Framework
                 {
                     sceneLoad
                         .Select(_ => new Unit())
-                        .Merge(gameLoad)
+                        .Concat(gameLoad)
                         .Subscribe(_ => { }, _ => { },
                             () =>
                             {

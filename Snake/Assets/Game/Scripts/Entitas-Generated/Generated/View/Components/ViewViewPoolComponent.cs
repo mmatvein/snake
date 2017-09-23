@@ -11,21 +11,23 @@ public partial class ViewEntity {
     public Game.Components.ViewPool viewPool { get { return (Game.Components.ViewPool)GetComponent(ViewComponentsLookup.ViewPool); } }
     public bool hasViewPool { get { return HasComponent(ViewComponentsLookup.ViewPool); } }
 
-    public void AddViewPool(UnityEngine.Object newPrefab, System.Collections.Generic.List<UnityEngine.GameObject> newFreeViews, System.Collections.Generic.List<UnityEngine.GameObject> newUsedViews) {
+    public void AddViewPool(UnityEngine.Object newPrefab, System.Collections.Generic.List<UnityEngine.GameObject> newFreeViews, System.Collections.Generic.List<UnityEngine.GameObject> newUsedViews, UnityEngine.Transform newPoolTransform) {
         var index = ViewComponentsLookup.ViewPool;
         var component = CreateComponent<Game.Components.ViewPool>(index);
         component.prefab = newPrefab;
         component.freeViews = newFreeViews;
         component.usedViews = newUsedViews;
+        component.poolTransform = newPoolTransform;
         AddComponent(index, component);
     }
 
-    public void ReplaceViewPool(UnityEngine.Object newPrefab, System.Collections.Generic.List<UnityEngine.GameObject> newFreeViews, System.Collections.Generic.List<UnityEngine.GameObject> newUsedViews) {
+    public void ReplaceViewPool(UnityEngine.Object newPrefab, System.Collections.Generic.List<UnityEngine.GameObject> newFreeViews, System.Collections.Generic.List<UnityEngine.GameObject> newUsedViews, UnityEngine.Transform newPoolTransform) {
         var index = ViewComponentsLookup.ViewPool;
         var component = CreateComponent<Game.Components.ViewPool>(index);
         component.prefab = newPrefab;
         component.freeViews = newFreeViews;
         component.usedViews = newUsedViews;
+        component.poolTransform = newPoolTransform;
         ReplaceComponent(index, component);
     }
 
