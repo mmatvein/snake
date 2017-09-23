@@ -40,7 +40,8 @@ namespace Game
         Systems CreateSystems()
         {
             return new Feature("Systems")
-                .Add(new GameSystems.InputSystem(this.contexts));
+                .Add(new GameSystems.InputSystem(this.contexts))
+                .Add(new ViewSystems.ViewManagementSystem(this.contexts));
         }
     }
 }
