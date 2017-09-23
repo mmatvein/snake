@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace Game.Components
+﻿namespace Game.Components
 {
     public enum Direction : int
     {
@@ -13,15 +9,10 @@ namespace Game.Components
         Right
     }
 
-    public struct SnakeDirection
+    [Game]
+    public class SnakeDirection : Entitas.IComponent
     {
-        public readonly Direction currentDirection;
-        public readonly Direction currentWantedDirection;
-
-        public SnakeDirection(Direction currentDirection, Direction currentWantedDirection)
-        {
-            this.currentDirection = currentDirection;
-            this.currentWantedDirection = currentWantedDirection;
-        }
+        public Direction currentDirection;
+        public Direction currentWantedDirection;
     }
 }

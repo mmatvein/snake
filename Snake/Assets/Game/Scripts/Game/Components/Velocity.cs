@@ -1,16 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Game.Components
 {
-    public struct Velocity
+    [Game]
+    public class Velocity : Entitas.IComponent
     {
-        public readonly Vector2 velocity;
-
-        public Velocity(Vector2 velocity)
-        {
-            this.velocity = velocity;
-        }
+        public Vector2 velocity;
     }
 }

@@ -1,12 +1,8 @@
 ﻿namespace Game.Components
 {
-    public struct Timer
+    [Game]
+    public class Timer : Entitas.IComponent
     {
-        public readonly float value;
-
-        public Timer(float value)
-        {
-            this.value = value;
-        }
+        public float value;
     }
 }

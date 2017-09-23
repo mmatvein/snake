@@ -5,13 +5,9 @@ using UniRx;
 
 namespace Game.Components
 {
-    public struct SnakePosition
+    [Game]
+    public class SnakePosition : Entitas.IComponent
     {
-        public readonly List<Vector2> positions;
-
-        public SnakePosition(List<Vector2> positions)
-        {
-            this.positions = positions;
-        }
+        public List<Vector2> positions;
     }
 }
