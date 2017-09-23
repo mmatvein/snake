@@ -9,7 +9,7 @@ namespace Framework
     {
         private void Start()
         {
-            GameLoader gameLoader = new GameLoader(Bootstrap.SceneManager, new Game.MainGame());
+            GameLoader gameLoader = new GameLoader(Bootstrap.SceneManager, new Game.MainGame(Bootstrap.AssetBundleManager));
 
             gameLoader.LoadGame().Subscribe(
                 game => game.StartGame(),

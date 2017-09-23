@@ -2,35 +2,41 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UniRx;
 
 namespace Game.ViewSystems
 {
     using Entitas;
     using Entitas.Unity;
+    using Framework;
 
     public class ViewManagementSystem : Feature
     {
-        public ViewManagementSystem(Contexts contexts) : base("View Management")
+        public ViewManagementSystem(Contexts contexts, AssetBundleManager assetBundleManager) : base("View Management")
         {
-            this.Add(new ViewPoolingSystem(contexts));
+            this.Add(new ViewPoolingSystem<SpriteRenderer>(contexts, assetBundleManager, new AssetDefinition<SpriteRenderer>("prefabs", "Pooled Sprite")));
         }
     }
 
-    internal class ViewPoolingSystem : ReactiveSystem<ViewEntity>, IInitializeSystem
+    internal class ViewPoolingSystem<PooledObjectType> : ReactiveSystem<ViewEntity>, IInitializeSystem where PooledObjectType : Component
     {
         readonly ViewContext viewContext;
+        readonly AssetBundleManager assetBundleManager;
+        readonly AssetDefinition<PooledObjectType> assetDefinition;
 
-        public ViewPoolingSystem(Contexts contexts) : base(contexts.view)
+        ViewEntity viewPoolEntity;
+
+        public ViewPoolingSystem(Contexts contexts, AssetBundleManager assetBundleManager, AssetDefinition<PooledObjectType> assetDefinition) : base(contexts.view)
         {
             this.viewContext = contexts.view;
+            this.assetBundleManager = assetBundleManager;
+            this.assetDefinition = assetDefinition;
         }
 
         public void Initialize()
         {
-            if (!this.viewContext.hasViewPool)
-            {
-                this.viewContext.SetViewPool(new List<GameObject>(), new List<GameObject>());
-            }
+            this.viewPoolEntity = this.viewContext.CreateEntity();
+            this.viewPoolEntity.AddViewPool(this.assetBundleManager.LoadAsset(this.assetDefinition).Wait(), new List<GameObject>(), new List<GameObject>());
         }
 
         protected override void Execute(List<ViewEntity> entities)
@@ -40,7 +46,7 @@ namespace Game.ViewSystems
                 GameObject view = this.GetNew();
                 viewEntity.AddView(view);
                 view.Link(viewEntity, this.viewContext);
-                viewEntity.isCreateView = false;
+                viewEntity.RemoveCreateView();
                 viewEntity.OnComponentRemoved += this.OnComponentRemoved;
             }
         }
@@ -58,7 +64,7 @@ namespace Game.ViewSystems
 
         protected override bool Filter(ViewEntity entity)
         {
-            return entity.isCreateView;
+            return entity.hasCreateView && entity.createView.type == typeof(PooledObjectType);
         }
 
         protected override ICollector<ViewEntity> GetTrigger(IContext<ViewEntity> context)
@@ -69,27 +75,26 @@ namespace Game.ViewSystems
         private GameObject GetNew()
         {
             GameObject viewToUse = null;
-            if (this.viewContext.viewPool.freeViews.Count == 0)
+            if (this.viewPoolEntity.viewPool.freeViews.Count == 0)
             {
-                viewToUse = new GameObject("Game View");
-                
+                viewToUse = GameObject.Instantiate<PooledObjectType>(this.viewPoolEntity.viewPool.prefab as PooledObjectType).gameObject;
             }
             else
             {
-                viewToUse = this.viewContext.viewPool.freeViews[0];
-                this.viewContext.viewPool.freeViews.RemoveAt(0);
+                viewToUse = this.viewPoolEntity.viewPool.freeViews[0];
+                this.viewPoolEntity.viewPool.freeViews.RemoveAt(0);
             }
 
             viewToUse.SetActive(true);
-            this.viewContext.viewPool.usedViews.Add(viewToUse);
+            this.viewPoolEntity.viewPool.usedViews.Add(viewToUse);
             return viewToUse;
         }
 
         private void Release(GameObject viewObject)
         {
-            Assert.IsTrue(this.viewContext.viewPool.usedViews.Contains(viewObject), "View object was not in used views");
-            this.viewContext.viewPool.usedViews.Remove(viewObject);
-            this.viewContext.viewPool.freeViews.Add(viewObject);
+            Assert.IsTrue(this.viewPoolEntity.viewPool.usedViews.Contains(viewObject), "View object was not in used views");
+            this.viewPoolEntity.viewPool.usedViews.Remove(viewObject);
+            this.viewPoolEntity.viewPool.freeViews.Add(viewObject);
             viewObject.SetActive(false);
         }
     }

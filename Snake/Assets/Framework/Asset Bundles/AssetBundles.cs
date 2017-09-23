@@ -12,14 +12,26 @@ namespace Framework
         public AssetBundleException(string message) : base(message) { }
     }
 
+    public class AssetDefinition<T> where T : Object
+    {
+        public readonly string assetBundleName;
+        public readonly string assetName;
+
+        public AssetDefinition(string assetBundleName, string assetName)
+        {
+            this.assetBundleName = assetBundleName;
+            this.assetName = assetName;
+        }
+    }
+
     public class AssetBundleManager
     {
-        public IObservable<T> LoadAsset<T>(string assetBundleName, string assetName) where T : Object
+        public IObservable<T> LoadAsset<T>(AssetDefinition<T> assetDefinition) where T : Object
         {
-            string[] assetPaths = AssetDatabase.GetAssetPathsFromAssetBundleAndAssetName(assetBundleName, assetName);
+            string[] assetPaths = AssetDatabase.GetAssetPathsFromAssetBundleAndAssetName(assetDefinition.assetBundleName, assetDefinition.assetName);
             if (assetPaths.Length == 0)
             {
-                Assert.IsTrue(false, "There is no asset with name \"" + assetName + "\" in " + assetBundleName);
+                Assert.IsTrue(false, "There is no asset with name \"" + assetDefinition.assetName + "\" in " + assetDefinition.assetBundleName);
                 return null;
             }
             

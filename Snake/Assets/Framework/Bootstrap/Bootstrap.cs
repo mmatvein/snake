@@ -8,11 +8,12 @@ namespace Framework
     public static class Bootstrap
     {
         public static readonly SceneManager SceneManager;
+        public static readonly AssetBundleManager AssetBundleManager;
 
         static Bootstrap()
         {
-            AssetBundleManager assetBundleManager = new AssetBundleManager();
-            Bootstrap.SceneManager = new SceneManager(assetBundleManager);
+            Bootstrap.AssetBundleManager = new AssetBundleManager();
+            Bootstrap.SceneManager = new SceneManager(Bootstrap.AssetBundleManager);
         }
 
         public static IObservable<AsyncOperation> StartGame()

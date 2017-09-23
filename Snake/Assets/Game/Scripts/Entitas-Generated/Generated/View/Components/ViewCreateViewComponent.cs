@@ -8,19 +8,25 @@
 //------------------------------------------------------------------------------
 public partial class ViewEntity {
 
-    static readonly Game.Components.CreateViewComponent createViewComponent = new Game.Components.CreateViewComponent();
+    public Game.Components.CreateViewComponent createView { get { return (Game.Components.CreateViewComponent)GetComponent(ViewComponentsLookup.CreateView); } }
+    public bool hasCreateView { get { return HasComponent(ViewComponentsLookup.CreateView); } }
 
-    public bool isCreateView {
-        get { return HasComponent(ViewComponentsLookup.CreateView); }
-        set {
-            if (value != isCreateView) {
-                if (value) {
-                    AddComponent(ViewComponentsLookup.CreateView, createViewComponent);
-                } else {
-                    RemoveComponent(ViewComponentsLookup.CreateView);
-                }
-            }
-        }
+    public void AddCreateView(System.Type newType) {
+        var index = ViewComponentsLookup.CreateView;
+        var component = CreateComponent<Game.Components.CreateViewComponent>(index);
+        component.type = newType;
+        AddComponent(index, component);
+    }
+
+    public void ReplaceCreateView(System.Type newType) {
+        var index = ViewComponentsLookup.CreateView;
+        var component = CreateComponent<Game.Components.CreateViewComponent>(index);
+        component.type = newType;
+        ReplaceComponent(index, component);
+    }
+
+    public void RemoveCreateView() {
+        RemoveComponent(ViewComponentsLookup.CreateView);
     }
 }
 

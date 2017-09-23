@@ -8,8 +8,14 @@ namespace Game
 {
     public class MainGame : Framework.IMainGame
     {
+        private readonly AssetBundleManager assetBundleManager;
         private Systems systems;
         private Contexts contexts;
+
+        public MainGame(AssetBundleManager assetBundleManager)
+        {
+            this.assetBundleManager = assetBundleManager;
+        }
 
         public Scene GetMainScene()
         {
@@ -41,7 +47,7 @@ namespace Game
         {
             return new Feature("Systems")
                 .Add(new GameSystems.InputSystem(this.contexts))
-                .Add(new ViewSystems.ViewManagementSystem(this.contexts));
+                .Add(new ViewSystems.ViewManagementSystem(this.contexts, this.assetBundleManager));
         }
     }
 }
