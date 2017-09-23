@@ -8,25 +8,25 @@
 //------------------------------------------------------------------------------
 public partial class GameEntity {
 
-    public Game.Components.SnakePosition gameComponentsSnakePosition { get { return (Game.Components.SnakePosition)GetComponent(GameComponentsLookup.GameComponentsSnakePosition); } }
-    public bool hasGameComponentsSnakePosition { get { return HasComponent(GameComponentsLookup.GameComponentsSnakePosition); } }
+    public Game.Components.SnakePosition snakePosition { get { return (Game.Components.SnakePosition)GetComponent(GameComponentsLookup.SnakePosition); } }
+    public bool hasSnakePosition { get { return HasComponent(GameComponentsLookup.SnakePosition); } }
 
-    public void AddGameComponentsSnakePosition(System.Collections.Generic.List<UnityEngine.Vector2> newPositions) {
-        var index = GameComponentsLookup.GameComponentsSnakePosition;
+    public void AddSnakePosition(System.Collections.Generic.List<UnityEngine.Vector2> newPositions) {
+        var index = GameComponentsLookup.SnakePosition;
         var component = CreateComponent<Game.Components.SnakePosition>(index);
         component.positions = newPositions;
         AddComponent(index, component);
     }
 
-    public void ReplaceGameComponentsSnakePosition(System.Collections.Generic.List<UnityEngine.Vector2> newPositions) {
-        var index = GameComponentsLookup.GameComponentsSnakePosition;
+    public void ReplaceSnakePosition(System.Collections.Generic.List<UnityEngine.Vector2> newPositions) {
+        var index = GameComponentsLookup.SnakePosition;
         var component = CreateComponent<Game.Components.SnakePosition>(index);
         component.positions = newPositions;
         ReplaceComponent(index, component);
     }
 
-    public void RemoveGameComponentsSnakePosition() {
-        RemoveComponent(GameComponentsLookup.GameComponentsSnakePosition);
+    public void RemoveSnakePosition() {
+        RemoveComponent(GameComponentsLookup.SnakePosition);
     }
 }
 
@@ -40,17 +40,17 @@ public partial class GameEntity {
 //------------------------------------------------------------------------------
 public sealed partial class GameMatcher {
 
-    static Entitas.IMatcher<GameEntity> _matcherGameComponentsSnakePosition;
+    static Entitas.IMatcher<GameEntity> _matcherSnakePosition;
 
-    public static Entitas.IMatcher<GameEntity> GameComponentsSnakePosition {
+    public static Entitas.IMatcher<GameEntity> SnakePosition {
         get {
-            if (_matcherGameComponentsSnakePosition == null) {
-                var matcher = (Entitas.Matcher<GameEntity>)Entitas.Matcher<GameEntity>.AllOf(GameComponentsLookup.GameComponentsSnakePosition);
+            if (_matcherSnakePosition == null) {
+                var matcher = (Entitas.Matcher<GameEntity>)Entitas.Matcher<GameEntity>.AllOf(GameComponentsLookup.SnakePosition);
                 matcher.componentNames = GameComponentsLookup.componentNames;
-                _matcherGameComponentsSnakePosition = matcher;
+                _matcherSnakePosition = matcher;
             }
 
-            return _matcherGameComponentsSnakePosition;
+            return _matcherSnakePosition;
         }
     }
 }

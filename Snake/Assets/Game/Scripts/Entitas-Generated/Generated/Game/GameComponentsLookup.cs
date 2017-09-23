@@ -8,20 +8,20 @@
 //------------------------------------------------------------------------------
 public static class GameComponentsLookup {
 
-    public const int GameComponentsSnakeDirection = 0;
-    public const int GameComponentsSnakePosition = 1;
-    public const int GameComponentsTicker = 2;
-    public const int GameComponentsTimer = 3;
-    public const int GameComponentsVelocity = 4;
+    public const int SnakeDirection = 0;
+    public const int SnakePosition = 1;
+    public const int Ticker = 2;
+    public const int Timer = 3;
+    public const int Velocity = 4;
 
     public const int TotalComponents = 5;
 
     public static readonly string[] componentNames = {
-        "GameComponentsSnakeDirection",
-        "GameComponentsSnakePosition",
-        "GameComponentsTicker",
-        "GameComponentsTimer",
-        "GameComponentsVelocity"
+        "SnakeDirection",
+        "SnakePosition",
+        "Ticker",
+        "Timer",
+        "Velocity"
     };
 
     public static readonly System.Type[] componentTypes = {

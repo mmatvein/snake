@@ -1,6 +1,7 @@
 ﻿namespace Game.Components
 {
-    [Input]
+    using Entitas.CodeGeneration.Attributes;
+    [Input, Unique]
     public class Input : Entitas.IComponent
     {
         public bool up;

@@ -9,13 +9,13 @@ namespace Framework
     {
         private void Start()
         {
-            /*GameLoader gameLoader = new GameLoader(Bootstrap.SceneManager, new Game.MainGame());
+            GameLoader gameLoader = new GameLoader(Bootstrap.SceneManager, new Game.MainGame());
 
             gameLoader.LoadGame().Subscribe(
                 game => game.StartGame(),
                 _ => Debug.LogError("ERROR!"),
                 () => Debug.Log("Main Game loaded")
-            );*/
+            );
         }
     }
 }

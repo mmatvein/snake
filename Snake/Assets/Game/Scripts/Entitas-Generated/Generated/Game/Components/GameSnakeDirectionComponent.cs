@@ -8,27 +8,27 @@
 //------------------------------------------------------------------------------
 public partial class GameEntity {
 
-    public Game.Components.SnakeDirection gameComponentsSnakeDirection { get { return (Game.Components.SnakeDirection)GetComponent(GameComponentsLookup.GameComponentsSnakeDirection); } }
-    public bool hasGameComponentsSnakeDirection { get { return HasComponent(GameComponentsLookup.GameComponentsSnakeDirection); } }
+    public Game.Components.SnakeDirection snakeDirection { get { return (Game.Components.SnakeDirection)GetComponent(GameComponentsLookup.SnakeDirection); } }
+    public bool hasSnakeDirection { get { return HasComponent(GameComponentsLookup.SnakeDirection); } }
 
-    public void AddGameComponentsSnakeDirection(Game.Components.Direction newCurrentDirection, Game.Components.Direction newCurrentWantedDirection) {
-        var index = GameComponentsLookup.GameComponentsSnakeDirection;
+    public void AddSnakeDirection(Game.Components.Direction newCurrentDirection, Game.Components.Direction newCurrentWantedDirection) {
+        var index = GameComponentsLookup.SnakeDirection;
         var component = CreateComponent<Game.Components.SnakeDirection>(index);
         component.currentDirection = newCurrentDirection;
         component.currentWantedDirection = newCurrentWantedDirection;
         AddComponent(index, component);
     }
 
-    public void ReplaceGameComponentsSnakeDirection(Game.Components.Direction newCurrentDirection, Game.Components.Direction newCurrentWantedDirection) {
-        var index = GameComponentsLookup.GameComponentsSnakeDirection;
+    public void ReplaceSnakeDirection(Game.Components.Direction newCurrentDirection, Game.Components.Direction newCurrentWantedDirection) {
+        var index = GameComponentsLookup.SnakeDirection;
         var component = CreateComponent<Game.Components.SnakeDirection>(index);
         component.currentDirection = newCurrentDirection;
         component.currentWantedDirection = newCurrentWantedDirection;
         ReplaceComponent(index, component);
     }
 
-    public void RemoveGameComponentsSnakeDirection() {
-        RemoveComponent(GameComponentsLookup.GameComponentsSnakeDirection);
+    public void RemoveSnakeDirection() {
+        RemoveComponent(GameComponentsLookup.SnakeDirection);
     }
 }
 
@@ -42,17 +42,17 @@ public partial class GameEntity {
 //------------------------------------------------------------------------------
 public sealed partial class GameMatcher {
 
-    static Entitas.IMatcher<GameEntity> _matcherGameComponentsSnakeDirection;
+    static Entitas.IMatcher<GameEntity> _matcherSnakeDirection;
 
-    public static Entitas.IMatcher<GameEntity> GameComponentsSnakeDirection {
+    public static Entitas.IMatcher<GameEntity> SnakeDirection {
         get {
-            if (_matcherGameComponentsSnakeDirection == null) {
-                var matcher = (Entitas.Matcher<GameEntity>)Entitas.Matcher<GameEntity>.AllOf(GameComponentsLookup.GameComponentsSnakeDirection);
+            if (_matcherSnakeDirection == null) {
+                var matcher = (Entitas.Matcher<GameEntity>)Entitas.Matcher<GameEntity>.AllOf(GameComponentsLookup.SnakeDirection);
                 matcher.componentNames = GameComponentsLookup.componentNames;
-                _matcherGameComponentsSnakeDirection = matcher;
+                _matcherSnakeDirection = matcher;
             }
 
-            return _matcherGameComponentsSnakeDirection;
+            return _matcherSnakeDirection;
         }
     }
 }

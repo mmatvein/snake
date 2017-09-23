@@ -8,25 +8,25 @@
 //------------------------------------------------------------------------------
 public partial class GameEntity {
 
-    public Game.Components.Velocity gameComponentsVelocity { get { return (Game.Components.Velocity)GetComponent(GameComponentsLookup.GameComponentsVelocity); } }
-    public bool hasGameComponentsVelocity { get { return HasComponent(GameComponentsLookup.GameComponentsVelocity); } }
+    public Game.Components.Velocity velocity { get { return (Game.Components.Velocity)GetComponent(GameComponentsLookup.Velocity); } }
+    public bool hasVelocity { get { return HasComponent(GameComponentsLookup.Velocity); } }
 
-    public void AddGameComponentsVelocity(UnityEngine.Vector2 newVelocity) {
-        var index = GameComponentsLookup.GameComponentsVelocity;
+    public void AddVelocity(UnityEngine.Vector2 newVelocity) {
+        var index = GameComponentsLookup.Velocity;
         var component = CreateComponent<Game.Components.Velocity>(index);
         component.velocity = newVelocity;
         AddComponent(index, component);
     }
 
-    public void ReplaceGameComponentsVelocity(UnityEngine.Vector2 newVelocity) {
-        var index = GameComponentsLookup.GameComponentsVelocity;
+    public void ReplaceVelocity(UnityEngine.Vector2 newVelocity) {
+        var index = GameComponentsLookup.Velocity;
         var component = CreateComponent<Game.Components.Velocity>(index);
         component.velocity = newVelocity;
         ReplaceComponent(index, component);
     }
 
-    public void RemoveGameComponentsVelocity() {
-        RemoveComponent(GameComponentsLookup.GameComponentsVelocity);
+    public void RemoveVelocity() {
+        RemoveComponent(GameComponentsLookup.Velocity);
     }
 }
 
@@ -40,17 +40,17 @@ public partial class GameEntity {
 //------------------------------------------------------------------------------
 public sealed partial class GameMatcher {
 
-    static Entitas.IMatcher<GameEntity> _matcherGameComponentsVelocity;
+    static Entitas.IMatcher<GameEntity> _matcherVelocity;
 
-    public static Entitas.IMatcher<GameEntity> GameComponentsVelocity {
+    public static Entitas.IMatcher<GameEntity> Velocity {
         get {
-            if (_matcherGameComponentsVelocity == null) {
-                var matcher = (Entitas.Matcher<GameEntity>)Entitas.Matcher<GameEntity>.AllOf(GameComponentsLookup.GameComponentsVelocity);
+            if (_matcherVelocity == null) {
+                var matcher = (Entitas.Matcher<GameEntity>)Entitas.Matcher<GameEntity>.AllOf(GameComponentsLookup.Velocity);
                 matcher.componentNames = GameComponentsLookup.componentNames;
-                _matcherGameComponentsVelocity = matcher;
+                _matcherVelocity = matcher;
             }
 
-            return _matcherGameComponentsVelocity;
+            return _matcherVelocity;
         }
     }
 }

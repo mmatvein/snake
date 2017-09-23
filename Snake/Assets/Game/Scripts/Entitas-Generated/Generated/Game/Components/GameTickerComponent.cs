@@ -8,27 +8,27 @@
 //------------------------------------------------------------------------------
 public partial class GameEntity {
 
-    public Game.Components.Ticker gameComponentsTicker { get { return (Game.Components.Ticker)GetComponent(GameComponentsLookup.GameComponentsTicker); } }
-    public bool hasGameComponentsTicker { get { return HasComponent(GameComponentsLookup.GameComponentsTicker); } }
+    public Game.Components.Ticker ticker { get { return (Game.Components.Ticker)GetComponent(GameComponentsLookup.Ticker); } }
+    public bool hasTicker { get { return HasComponent(GameComponentsLookup.Ticker); } }
 
-    public void AddGameComponentsTicker(float newTickLength, int newCurrentTick) {
-        var index = GameComponentsLookup.GameComponentsTicker;
+    public void AddTicker(float newTickLength, int newCurrentTick) {
+        var index = GameComponentsLookup.Ticker;
         var component = CreateComponent<Game.Components.Ticker>(index);
         component.tickLength = newTickLength;
         component.currentTick = newCurrentTick;
         AddComponent(index, component);
     }
 
-    public void ReplaceGameComponentsTicker(float newTickLength, int newCurrentTick) {
-        var index = GameComponentsLookup.GameComponentsTicker;
+    public void ReplaceTicker(float newTickLength, int newCurrentTick) {
+        var index = GameComponentsLookup.Ticker;
         var component = CreateComponent<Game.Components.Ticker>(index);
         component.tickLength = newTickLength;
         component.currentTick = newCurrentTick;
         ReplaceComponent(index, component);
     }
 
-    public void RemoveGameComponentsTicker() {
-        RemoveComponent(GameComponentsLookup.GameComponentsTicker);
+    public void RemoveTicker() {
+        RemoveComponent(GameComponentsLookup.Ticker);
     }
 }
 
@@ -42,17 +42,17 @@ public partial class GameEntity {
 //------------------------------------------------------------------------------
 public sealed partial class GameMatcher {
 
-    static Entitas.IMatcher<GameEntity> _matcherGameComponentsTicker;
+    static Entitas.IMatcher<GameEntity> _matcherTicker;
 
-    public static Entitas.IMatcher<GameEntity> GameComponentsTicker {
+    public static Entitas.IMatcher<GameEntity> Ticker {
         get {
-            if (_matcherGameComponentsTicker == null) {
-                var matcher = (Entitas.Matcher<GameEntity>)Entitas.Matcher<GameEntity>.AllOf(GameComponentsLookup.GameComponentsTicker);
+            if (_matcherTicker == null) {
+                var matcher = (Entitas.Matcher<GameEntity>)Entitas.Matcher<GameEntity>.AllOf(GameComponentsLookup.Ticker);
                 matcher.componentNames = GameComponentsLookup.componentNames;
-                _matcherGameComponentsTicker = matcher;
+                _matcherTicker = matcher;
             }
 
-            return _matcherGameComponentsTicker;
+            return _matcherTicker;
         }
     }
 }
