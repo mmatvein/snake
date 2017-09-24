@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Game.GameSystems
+namespace Game.InputSystems
 {
     using Entitas;
 
