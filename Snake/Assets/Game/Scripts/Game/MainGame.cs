@@ -42,6 +42,8 @@ namespace Game
         {
             if (this.updateSubscription != null)
                 this.updateSubscription.Dispose();
+
+            this.systems.TearDown();
         }
 
         void Update(long updateTick)
