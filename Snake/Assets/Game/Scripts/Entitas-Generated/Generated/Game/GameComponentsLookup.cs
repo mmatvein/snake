@@ -8,15 +8,17 @@
 //------------------------------------------------------------------------------
 public static class GameComponentsLookup {
 
-    public const int SnakeDirection = 0;
-    public const int SnakePosition = 1;
-    public const int Ticker = 2;
-    public const int Timer = 3;
-    public const int Velocity = 4;
+    public const int MainTicker = 0;
+    public const int SnakeDirection = 1;
+    public const int SnakePosition = 2;
+    public const int Ticker = 3;
+    public const int Timer = 4;
+    public const int Velocity = 5;
 
-    public const int TotalComponents = 5;
+    public const int TotalComponents = 6;
 
     public static readonly string[] componentNames = {
+        "MainTicker",
         "SnakeDirection",
         "SnakePosition",
         "Ticker",
@@ -25,6 +27,7 @@ public static class GameComponentsLookup {
     };
 
     public static readonly System.Type[] componentTypes = {
+        typeof(Game.Components.MainTicker),
         typeof(Game.Components.SnakeDirection),
         typeof(Game.Components.SnakePosition),
         typeof(Game.Components.Ticker),

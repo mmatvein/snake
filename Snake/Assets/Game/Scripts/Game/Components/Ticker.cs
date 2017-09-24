@@ -6,4 +6,7 @@
         public float tickLength;
         public int currentTick;
     }
+
+    [Game]
+    public class MainTicker : Entitas.IComponent { }
 }
