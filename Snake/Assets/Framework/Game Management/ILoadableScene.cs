@@ -5,10 +5,11 @@ using UniRx;
 
 namespace Framework
 {
-    public interface IMainGame
+    public interface ILoadableScene
     {
         IObservable<Unit> Load();
-        void StartGame();
+        void Start();
+        void End();
         Scene GetMainScene();
     }
 }

@@ -6,15 +6,16 @@ using Entitas;
 
 namespace Game
 {
-    public class MainGame : Framework.IMainGame
+    public class MainGame : ILoadableScene
     {
-        private readonly AssetBundleManager assetBundleManager;
+        private readonly MainApplication mainApplication;
         private Systems systems;
         private Contexts contexts;
+        private System.IDisposable updateSubscription;
 
-        public MainGame(AssetBundleManager assetBundleManager)
+        public MainGame(MainApplication mainApplication)
         {
-            this.assetBundleManager = assetBundleManager;
+            this.mainApplication = mainApplication;
         }
 
         public Scene GetMainScene()
@@ -32,9 +33,15 @@ namespace Game
             }, Scheduler.CurrentThread);
         }
 
-        public void StartGame()
+        public void Start()
         {
-            Observable.EveryUpdate().Subscribe(this.Update);
+            this.updateSubscription = Observable.EveryUpdate().Subscribe(this.Update);
+        }
+
+        public void End()
+        {
+            if (this.updateSubscription != null)
+                this.updateSubscription.Dispose();
         }
 
         void Update(long updateTick)
@@ -49,7 +56,7 @@ namespace Game
                 .Add(new GameSystems.InputSystem(this.contexts))
                 .Add(new GameSystems.TimerSystem(this.contexts, () => UnityEngine.Time.deltaTime))
                 .Add(new GameSystems.TickerSystem(this.contexts))
-                .Add(new ViewSystems.ViewManagementSystem(this.contexts, this.assetBundleManager));
+                .Add(new ViewSystems.ViewManagementSystem(this.contexts, this.mainApplication.AssetBundleManager));
         }
     }
 }

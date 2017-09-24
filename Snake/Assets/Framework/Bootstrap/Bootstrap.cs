@@ -7,18 +7,24 @@ namespace Framework
 {
     public static class Bootstrap
     {
-        public static readonly SceneManager SceneManager;
-        public static readonly AssetBundleManager AssetBundleManager;
-
-        static Bootstrap()
+        public static IObservable<Unit> StartGame()
         {
-            Bootstrap.AssetBundleManager = new AssetBundleManager();
-            Bootstrap.SceneManager = new SceneManager(Bootstrap.AssetBundleManager);
-        }
+            return Observable.Create<MainApplication>(subscriber =>
+                    {
+                        GameObject mainObject = new GameObject("Main Application");
+                        GameObject.DontDestroyOnLoad(mainObject);
+                        MainApplication mainApp = mainObject.AddComponent<MainApplication>();
 
-        public static IObservable<AsyncOperation> StartGame()
-        {
-            return Bootstrap.SceneManager.LoadScene(new Scene("Loading"));
+                        AssetBundleManager assetBundleManager = new AssetBundleManager();
+                        SceneManager sceneManager = new SceneManager(assetBundleManager);
+                        mainApp.Init(assetBundleManager, sceneManager);
+
+                        subscriber.OnNext(mainApp);
+                        subscriber.OnCompleted();
+
+                        return Disposable.Empty;
+                    })
+                .SelectMany(mainApp => mainApp.ChangeScene(new LoadingScene(mainApp)));
         }
     }
 }
