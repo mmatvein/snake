@@ -59,9 +59,7 @@ namespace Game
         {
             return new Feature("Systems")
                 .Add(new InputSystems.InputSystem(this.contexts))
-                .Add(new GameSystems.MainTickerCreationSystem(this.contexts))
-                .Add(new GameSystems.TimerSystem(this.contexts, () => UnityEngine.Time.deltaTime))
-                .Add(new GameSystems.TickerSystem(this.contexts))
+                .Add(new GameSystems.GameSystems(this.contexts))
                 .Add(new ViewSystems.ViewManagementSystem(this.contexts, this.mainApplication.AssetBundleManager));
         }
     }
