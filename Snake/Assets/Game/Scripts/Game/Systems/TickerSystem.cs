@@ -28,7 +28,7 @@ namespace Game.GameSystems
                 {
                     int ticks = entity.ticker.currentTick + 1;
                     timerValue -= tickLength;
-                    entity.ReplaceTimer(timerValue);
+                    entity.ReplaceTimer(timerValue, entity.timer.dt);
                     entity.ReplaceTicker(tickLength, ticks);
 
                     Debug.Log("Tick! " + ticks);

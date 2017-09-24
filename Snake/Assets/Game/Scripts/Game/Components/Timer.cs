@@ -4,5 +4,6 @@
     public class Timer : Entitas.IComponent
     {
         public float value;
+        public float dt;
     }
 }
