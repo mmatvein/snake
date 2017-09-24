@@ -47,6 +47,8 @@ namespace Game
         {
             return new Feature("Systems")
                 .Add(new GameSystems.InputSystem(this.contexts))
+                .Add(new GameSystems.TimerSystem(this.contexts))
+                .Add(new GameSystems.TickerSystem(this.contexts))
                 .Add(new ViewSystems.ViewManagementSystem(this.contexts, this.assetBundleManager));
         }
     }
