@@ -21,16 +21,19 @@ namespace Framework
 
         public IObservable<Unit> Load()
         {
-            return Observable.Empty<Unit>().Delay(System.TimeSpan.FromSeconds(2));
+            return Observable.Empty<Unit>();
         }
 
         public void Start()
         {
-            mainApplication.ChangeScene(new Game.MainGame(mainApplication)).Subscribe();
+            mainApplication.ChangeScene(new Game.MainGame(mainApplication))
+                .Delay(System.TimeSpan.FromSeconds(1))
+                .Subscribe();
         }
 
-        public void End()
+        public IObservable<Unit> Unload()
         {
+            return Observable.Empty<Unit>();
         }
     }
 }

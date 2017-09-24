@@ -9,7 +9,7 @@ namespace Framework
     {
         IObservable<Unit> Load();
         void Start();
-        void End();
+        IObservable<Unit> Unload();
         Scene GetMainScene();
     }
 }

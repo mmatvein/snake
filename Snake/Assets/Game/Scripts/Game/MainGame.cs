@@ -30,7 +30,7 @@ namespace Game
                 this.contexts = Contexts.sharedInstance;
                 this.systems = this.CreateSystems();
                 this.systems.Initialize();
-            }, Scheduler.CurrentThread);
+            }, Scheduler.MainThread);
         }
 
         public void Start()
@@ -38,12 +38,15 @@ namespace Game
             this.updateSubscription = Observable.EveryUpdate().Subscribe(this.Update);
         }
 
-        public void End()
+        public IObservable<Unit> Unload()
         {
-            if (this.updateSubscription != null)
-                this.updateSubscription.Dispose();
+            return Observable.Start(() =>
+            {
+                if (this.updateSubscription != null)
+                    this.updateSubscription.Dispose();
 
-            this.systems.TearDown();
+                this.systems.TearDown();
+            }, Scheduler.MainThread);
         }
 
         void Update(long updateTick)

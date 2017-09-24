@@ -20,7 +20,7 @@ namespace Framework
 
         public IObservable<Unit> ChangeScene(ILoadableScene scene)
         {
-            return Observable.Start(this.EndCurrentScene, Scheduler.MainThread)
+            return this.EndCurrentScene()
                 .Concat(this.SceneManager.LoadScene(scene.GetMainScene()).Select(_ => new Unit()))
                 .Concat(scene.Load())
                 .Concat(Observable.Start(() => this.SetCurrentScene(scene), Scheduler.MainThread));
@@ -32,10 +32,12 @@ namespace Framework
             this.currentScene.Start();
         }
 
-        void EndCurrentScene()
+        IObservable<Unit> EndCurrentScene()
         {
             if (this.currentScene != null)
-                this.currentScene.End();
+                return this.currentScene.Unload();
+            else
+                return Observable.Empty<Unit>();
         }
 
         internal class Managers
