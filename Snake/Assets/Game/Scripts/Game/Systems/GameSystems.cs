@@ -16,6 +16,7 @@ namespace Game.GameSystems
             this.Add(new TickerSystem(contexts));
 
             this.Add(new SnakeMoveSystem(contexts));
+            this.Add(new SnakeVisualCreationSystem(contexts));
         }
     }
 }

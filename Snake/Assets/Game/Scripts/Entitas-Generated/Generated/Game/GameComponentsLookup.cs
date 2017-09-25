@@ -11,16 +11,18 @@ public static class GameComponentsLookup {
     public const int MainTicker = 0;
     public const int SnakeDirection = 1;
     public const int SnakePosition = 2;
-    public const int Ticker = 3;
-    public const int Timer = 4;
-    public const int Velocity = 5;
+    public const int SnakeVisual = 3;
+    public const int Ticker = 4;
+    public const int Timer = 5;
+    public const int Velocity = 6;
 
-    public const int TotalComponents = 6;
+    public const int TotalComponents = 7;
 
     public static readonly string[] componentNames = {
         "MainTicker",
         "SnakeDirection",
         "SnakePosition",
+        "SnakeVisual",
         "Ticker",
         "Timer",
         "Velocity"
@@ -30,6 +32,7 @@ public static class GameComponentsLookup {
         typeof(Game.Components.MainTicker),
         typeof(Game.Components.SnakeDirection),
         typeof(Game.Components.SnakePosition),
+        typeof(Game.Components.SnakeVisual),
         typeof(Game.Components.Ticker),
         typeof(Game.Components.Timer),
         typeof(Game.Components.Velocity)
