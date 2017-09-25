@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86d5a4be7f9b3f943b0bcb86e6c55fb1, type: 3}
+  m_Name: Main Player Snake
+  m_EditorClassIdentifier: 
+  straightLeft: {fileID: 21300000, guid: ac421f9c18dd1384eab8781b44e39c81, type: 3}
+  straightRight: {fileID: 21300000, guid: 8387dec72de02314e9f880de691f033e, type: 3}
+  straightUp: {fileID: 21300000, guid: 8b332d60ac9899940b8abfe2c30e88e7, type: 3}
+  straightDown: {fileID: 21300000, guid: 902d1ec560e72c246a0fc67b3773def3, type: 3}
+  upToRight: {fileID: 21300000, guid: 9b71a1bbdc8f6cc40a8883c199ccc77e, type: 3}
+  upToLeft: {fileID: 21300000, guid: 912488e4f8282ad47b3bbe4f0e3e2156, type: 3}
+  downToRight: {fileID: 21300000, guid: 4ef2de2eb5f3564419441d0cd6b9001b, type: 3}
+  downToLeft: {fileID: 21300000, guid: 3b991915cce98b844b95192b94194a68, type: 3}
+  leftToUp: {fileID: 21300000, guid: f4bc9cf29714e3340abfbcfaed54e556, type: 3}
+  leftToDown: {fileID: 21300000, guid: ef50d0d48efe55c4ea721e741ee5fe5a, type: 3}
+  rightToUp: {fileID: 21300000, guid: f8251b2b2f1e42c43bfab0418a4f7c2c, type: 3}
+  rightToDown: {fileID: 21300000, guid: 2882b05011e6b0242bc2e7acca242f50, type: 3}
+  headLeft: {fileID: 21300000, guid: eadde389c4005c54bb49980d5680a0d6, type: 3}
+  headRight: {fileID: 21300000, guid: b9aee8984a70a0e4eb19f36fbb7d31af, type: 3}
+  headUp: {fileID: 21300000, guid: 0685d34b68978474bb65c4c4acc09fcb, type: 3}
+  headDown: {fileID: 21300000, guid: 7c6e9dce7a698a44eae080443f8dc449, type: 3}
+  tailLeft: {fileID: 21300000, guid: 2724e4c94691ac142951d201b0c02009, type: 3}
+  tailRight: {fileID: 21300000, guid: 12a4f4e5f1540584a81003cb63dc5cef, type: 3}
+  tailUp: {fileID: 21300000, guid: fca8b6ebd895e5441a5de4fdc8e0940c, type: 3}
+  tailDown: {fileID: 21300000, guid: 82bb378a345a663489d1988cecfc61cc, type: 3}
