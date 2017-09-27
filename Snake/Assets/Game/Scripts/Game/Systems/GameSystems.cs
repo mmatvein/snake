@@ -15,6 +15,7 @@ namespace Game.GameSystems
             this.Add(new TimerSystem(contexts, () => Time.deltaTime));
             this.Add(new TickerSystem(contexts));
 
+            this.Add(new SnakeDirectionChangeSystem(contexts));
             this.Add(new SnakeMoveSystem(contexts));
             this.Add(new SnakeVisualCreationSystem(contexts, assetBundleManager));
             this.Add(new SnakeVisualUpdateSystem(contexts));

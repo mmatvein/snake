@@ -22,6 +22,7 @@ namespace Game.GameSystems
                 new Vector2(3, 0), new Vector2(3, 1), new Vector2(4, 1),
                 new Vector2(5, 1), new Vector2(6, 1), new Vector2(6, 2) });
             snake.AddSnakeDirection(Components.Direction.Left, Components.Direction.Left);
+            snake.isReactToInput = true;
         }
     }
 }

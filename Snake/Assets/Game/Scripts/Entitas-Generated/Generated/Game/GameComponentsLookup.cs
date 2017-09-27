@@ -10,18 +10,20 @@ public static class GameComponentsLookup {
 
     public const int MainTicker = 0;
     public const int Position = 1;
-    public const int SnakeDirection = 2;
-    public const int SnakePosition = 3;
-    public const int SnakeVisual = 4;
-    public const int Ticker = 5;
-    public const int Timer = 6;
-    public const int Velocity = 7;
+    public const int ReactToInput = 2;
+    public const int SnakeDirection = 3;
+    public const int SnakePosition = 4;
+    public const int SnakeVisual = 5;
+    public const int Ticker = 6;
+    public const int Timer = 7;
+    public const int Velocity = 8;
 
-    public const int TotalComponents = 8;
+    public const int TotalComponents = 9;
 
     public static readonly string[] componentNames = {
         "MainTicker",
         "Position",
+        "ReactToInput",
         "SnakeDirection",
         "SnakePosition",
         "SnakeVisual",
@@ -33,6 +35,7 @@ public static class GameComponentsLookup {
     public static readonly System.Type[] componentTypes = {
         typeof(Game.Components.MainTicker),
         typeof(Game.Components.Position),
+        typeof(Game.Components.ReactToInput),
         typeof(Game.Components.SnakeDirection),
         typeof(Game.Components.SnakePosition),
         typeof(Game.Components.SnakeVisual),

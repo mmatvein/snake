@@ -93,7 +93,6 @@ namespace Game.GameSystems
 
         Sprite GetBodySprite(Direction towardsHeadDirection, Direction fromTailDirection, SnakeVisualDefinition visualDefinition)
         {
-            Debug.Log("Towards Head: " + towardsHeadDirection + ", from tail: " + fromTailDirection);
             switch (fromTailDirection)
             {
                 case Direction.Up:

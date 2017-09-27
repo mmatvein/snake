@@ -30,8 +30,6 @@ namespace Game.GameSystems
                     timerValue -= tickLength;
                     entity.ReplaceTimer(timerValue, entity.timer.dt);
                     entity.ReplaceTicker(tickLength, ticks);
-
-                    Debug.Log("Tick! " + ticks);
                 }
             }
         }
