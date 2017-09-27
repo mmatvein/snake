@@ -11,16 +11,18 @@ public partial class GameEntity {
     public Game.Components.SnakeVisual snakeVisual { get { return (Game.Components.SnakeVisual)GetComponent(GameComponentsLookup.SnakeVisual); } }
     public bool hasSnakeVisual { get { return HasComponent(GameComponentsLookup.SnakeVisual); } }
 
-    public void AddSnakeVisual(System.Collections.Generic.List<ViewEntity> newLinkedVisuals) {
+    public void AddSnakeVisual(Game.Definitions.SnakeVisualDefinition newSnakeVisualDefinition, System.Collections.Generic.List<ViewEntity> newLinkedVisuals) {
         var index = GameComponentsLookup.SnakeVisual;
         var component = CreateComponent<Game.Components.SnakeVisual>(index);
+        component.snakeVisualDefinition = newSnakeVisualDefinition;
         component.linkedVisuals = newLinkedVisuals;
         AddComponent(index, component);
     }
 
-    public void ReplaceSnakeVisual(System.Collections.Generic.List<ViewEntity> newLinkedVisuals) {
+    public void ReplaceSnakeVisual(Game.Definitions.SnakeVisualDefinition newSnakeVisualDefinition, System.Collections.Generic.List<ViewEntity> newLinkedVisuals) {
         var index = GameComponentsLookup.SnakeVisual;
         var component = CreateComponent<Game.Components.SnakeVisual>(index);
+        component.snakeVisualDefinition = newSnakeVisualDefinition;
         component.linkedVisuals = newLinkedVisuals;
         ReplaceComponent(index, component);
     }

@@ -59,7 +59,8 @@ namespace Game.ViewSystems
             foreach (ViewEntity viewEntity in entities)
             {
                 GameObject view = this.GetNew();
-                viewEntity.AddView(view);
+                viewEntity.AddView(view, typeof(PooledObjectType));
+                viewEntity.AddUnityTransform(view.transform);
                 view.Link(viewEntity, this.viewContext);
                 viewEntity.RemoveCreateView();
                 viewEntity.OnComponentRemoved += this.OnComponentRemoved;

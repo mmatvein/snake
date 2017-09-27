@@ -13,6 +13,7 @@ namespace Game.Components
     public class ViewComponent : Entitas.IComponent
     {
         public GameObject gameObject;
+        public System.Type type;
     }
 
     [View]

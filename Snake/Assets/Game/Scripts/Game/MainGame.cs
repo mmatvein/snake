@@ -59,8 +59,10 @@ namespace Game
         {
             return new Feature("Systems")
                 .Add(new InputSystems.InputSystem(this.contexts))
-                .Add(new GameSystems.GameSystems(this.contexts))
-                .Add(new ViewSystems.ViewManagementSystem(this.contexts, this.mainApplication.AssetBundleManager));
+                .Add(new GameSystems.GameSystems(this.contexts, this.mainApplication.AssetBundleManager))
+                .Add(new ViewSystems.ViewManagementSystem(this.contexts, this.mainApplication.AssetBundleManager))
+                .Add(new ViewSystems.SpriteUpdateSystem(this.contexts))
+                .Add(new GameSystems.UnityPositionUpdateSystem(this.contexts));
         }
     }
 }

@@ -7,7 +7,7 @@ namespace Game.GameSystems
     using Entitas;
     public class GameSystems : Feature
     {
-        public GameSystems(Contexts contexts) : base("Game Systems")
+        public GameSystems(Contexts contexts, Framework.AssetBundleManager assetBundleManager) : base("Game Systems")
         {
             this.Add(new MainTickerCreationSystem(contexts));
             this.Add(new SnakeCreationSystem(contexts));
@@ -16,7 +16,8 @@ namespace Game.GameSystems
             this.Add(new TickerSystem(contexts));
 
             this.Add(new SnakeMoveSystem(contexts));
-            this.Add(new SnakeVisualCreationSystem(contexts));
+            this.Add(new SnakeVisualCreationSystem(contexts, assetBundleManager));
+            this.Add(new SnakeVisualUpdateSystem(contexts));
         }
     }
 }

@@ -9,20 +9,32 @@
 public static class ViewComponentsLookup {
 
     public const int CreateView = 0;
-    public const int View = 1;
-    public const int ViewPool = 2;
+    public const int Position = 1;
+    public const int UnityTransform = 2;
+    public const int View = 3;
+    public const int ViewPool = 4;
+    public const int SpriteRendererLinkup = 5;
+    public const int SpriteVisual = 6;
 
-    public const int TotalComponents = 3;
+    public const int TotalComponents = 7;
 
     public static readonly string[] componentNames = {
         "CreateView",
+        "Position",
+        "UnityTransform",
         "View",
-        "ViewPool"
+        "ViewPool",
+        "SpriteRendererLinkup",
+        "SpriteVisual"
     };
 
     public static readonly System.Type[] componentTypes = {
         typeof(Game.Components.CreateViewComponent),
+        typeof(Game.Components.Position),
+        typeof(Game.Components.UnityTransform),
         typeof(Game.Components.ViewComponent),
-        typeof(Game.Components.ViewPool)
+        typeof(Game.Components.ViewPool),
+        typeof(SpriteRendererLinkupComponent),
+        typeof(SpriteVisualComponent)
     };
 }
