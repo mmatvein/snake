@@ -31,13 +31,13 @@ namespace Game.GameSystems
                 SnakeDirection snakeDirection = snake.snakeDirection;
                 Direction newWantedDirection = snakeDirection.currentWantedDirection;
 
-                if (gatheredInput.up)
+                if (gatheredInput.up && snakeDirection.currentDirection != Direction.Down)
                     newWantedDirection = Direction.Up;
-                else if (gatheredInput.down)
+                else if (gatheredInput.down && snakeDirection.currentDirection != Direction.Up)
                     newWantedDirection = Direction.Down;
-                else if (gatheredInput.left)
+                else if (gatheredInput.left && snakeDirection.currentDirection != Direction.Right)
                     newWantedDirection = Direction.Left;
-                else if (gatheredInput.right)
+                else if (gatheredInput.right && snakeDirection.currentDirection != Direction.Left)
                     newWantedDirection = Direction.Right;
 
                 snake.ReplaceSnakeDirection(snakeDirection.currentDirection, newWantedDirection);
